@@ -1,0 +1,47 @@
+﻿<controls:MetroWindow 
+    x:Class="CrowdDj.WPF.GuestLoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:controls1="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:viewModels="clr-namespace:CrowdDj.WPF.ViewModels"
+    Height="150"
+    Width="400"
+    MinHeight="100"
+    MinWidth="300"
+    Title="CrowdDj - Simple Vote"
+    WindowStyle="ThreeDBorderWindow" BorderThickness="2" 
+    BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
+>
+
+    <Window.DataContext>
+        <viewModels:LoginViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="90"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="20" Grid.Row="1" Grid.Column="0">Partycode:</TextBlock>
+        <TextBox Margin="5,15,5,20" Grid.Row="1" Grid.Column="1" 
+                 Text="{Binding TextPartyCode, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Name="Back" Height="25" Margin="5"
+                    Command="{Binding CommandBack, Mode=OneWay}"
+                    HorizontalAlignment="Center">
+                Back
+            </Button>
+            <Button Name="ButtonSaveChanges" Margin="5" Height="25" Width="100"
+                    Command="{Binding CommandLogin, Mode=OneWay}">
+                Login
+            </Button>
+        </StackPanel>
+    </Grid>
+</controls:MetroWindow>

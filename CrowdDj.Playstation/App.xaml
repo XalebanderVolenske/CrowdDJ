@@ -1,0 +1,15 @@
+﻿<Application x:Class="CrowdDj.Playstation.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:CrowdDj.Playstation"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Style x:Key="LoginWindowStyle" TargetType="Window">
+             <Setter Property="Background">
+                 <Setter.Value>
+                    <ImageBrush ImageSource="assets/login_img.jpg"/>
+                </Setter.Value>
+             </Setter>
+         </Style>
+    </Application.Resources>
+</Application>
