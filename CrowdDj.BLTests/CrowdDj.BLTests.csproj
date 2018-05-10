@@ -53,7 +53,10 @@
   <ItemGroup>
     <Compile Include="MockGenerciRepository.cs" />
     <Compile Include="MockUnitOfWork.cs" />
+    <Compile Include="PartiesControllerTests.cs" />
+    <Compile Include="PartyTweetsControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TracksControllerTests.cs" />
     <Compile Include="VotesControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +67,10 @@
     <ProjectReference Include="..\CrowdDj.DAL\CrowdDj.DAL.csproj">
       <Project>{B38EC00E-90C3-49C1-A58F-F33E94E47F12}</Project>
       <Name>CrowdDj.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CrowdDj.Web\CrowdDj.Web.csproj">
+      <Project>{ED6AC0BB-69FF-4B6C-85D9-E19ADBDBE208}</Project>
+      <Name>CrowdDj.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

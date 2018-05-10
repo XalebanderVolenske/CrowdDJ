@@ -27,7 +27,6 @@ namespace CrowdDj.DAL
             Votes = new GenericRepository<Vote>(_dbContext);
             PartyTweets = new GenericRepository<PartyTweet>(_dbContext);
             PartyGuests = new GenericRepository<PartyGuest>(_dbContext);
-
         }
 
         /// <summary>
@@ -64,9 +63,6 @@ namespace CrowdDj.DAL
             entries.ForEach(entry => entry.Reload());
         }
 
-        /// <summary>
-        /// Geänderte Entities extra validieren
-        /// </summary>
         public void SaveChanges()
         {
             try

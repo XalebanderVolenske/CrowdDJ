@@ -43,7 +43,7 @@ namespace CrowdDj.Web.ApiControllers
 
             trackInDb.Interpret = track.Interpret;
             trackInDb.PlayLists = track.PlayLists;
-            trackInDb.RecommandedByGuest = track.RecommandedByGuest;
+            trackInDb.RecommendedByGuest = track.RecommendedByGuest;
             trackInDb.Title = track.Title;
             trackInDb.Url = track.Url;
             trackInDb.Votes = track.Votes;

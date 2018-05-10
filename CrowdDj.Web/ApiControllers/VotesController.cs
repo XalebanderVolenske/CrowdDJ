@@ -63,8 +63,9 @@ namespace CrowdDj.Web.ApiControllers
                 return BadRequest(ModelState);
 
             if (_unitOfWork.Votes.Get(v =>
-                    v.GuestId == vote.GuestId && v.PlayListId == vote.PlayListId && v.TrackId == vote.TrackId).Length ==
-                0)
+                    v.GuestId == vote.GuestId 
+                    && v.PlayListId == vote.PlayListId 
+                    && v.TrackId == vote.TrackId).Length == 0)
             {
 
                 Vote newVote = new Vote{Guest = _unitOfWork.Guests.GetById(vote.GuestId), PlayList = _unitOfWork.PlayLists.GetById(vote.PlayListId),

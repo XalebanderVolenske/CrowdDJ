@@ -1,0 +1,697 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CrowdDjModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Administrators">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guests">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="Party_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Parties">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PartyGuests">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartyCode" Type="int" Nullable="false" />
+          <Property Name="GuestId" Type="int" Nullable="false" />
+          <Property Name="PartyId" Type="int" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PartyTweets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="PartyGuest_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlayLists">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrackPlayLists">
+          <Key>
+            <PropertyRef Name="Track_Id" />
+            <PropertyRef Name="PlayList_Id" />
+          </Key>
+          <Property Name="Track_Id" Type="int" Nullable="false" />
+          <Property Name="PlayList_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tracks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Interpret" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="RecommendedByGuest_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Votes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="GuestId" Type="int" Nullable="false" />
+          <Property Name="TrackId" Type="int" Nullable="false" />
+          <Property Name="PlayListId" Type="int" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_Guests_dbo_Parties_Party_Id">
+          <End Role="Parties" Type="Self.Parties" Multiplicity="0..1" />
+          <End Role="Guests" Type="Self.Guests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Guests">
+              <PropertyRef Name="Party_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PartyGuests_dbo_Guests_GuestId">
+          <End Role="Guests" Type="Self.Guests" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PartyGuests" Type="Self.PartyGuests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guests">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PartyGuests">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PartyGuests_dbo_Parties_PartyId">
+          <End Role="Parties" Type="Self.Parties" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PartyGuests" Type="Self.PartyGuests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PartyGuests">
+              <PropertyRef Name="PartyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id">
+          <End Role="PartyGuests" Type="Self.PartyGuests" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PartyTweets" Type="Self.PartyTweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PartyGuests">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PartyTweets">
+              <PropertyRef Name="PartyGuest_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PlayLists_dbo_Parties_Id">
+          <End Role="Parties" Type="Self.Parties" Multiplicity="1" />
+          <End Role="PlayLists" Type="Self.PlayLists" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Parties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayLists">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TrackPlayLists_dbo_PlayLists_PlayList_Id">
+          <End Role="PlayLists" Type="Self.PlayLists" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TrackPlayLists" Type="Self.TrackPlayLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayLists">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrackPlayLists">
+              <PropertyRef Name="PlayList_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TrackPlayLists_dbo_Tracks_Track_Id">
+          <End Role="Tracks" Type="Self.Tracks" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TrackPlayLists" Type="Self.TrackPlayLists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tracks">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrackPlayLists">
+              <PropertyRef Name="Track_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id">
+          <End Role="PartyGuests" Type="Self.PartyGuests" Multiplicity="0..1" />
+          <End Role="Tracks" Type="Self.Tracks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PartyGuests">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tracks">
+              <PropertyRef Name="RecommendedByGuest_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Votes_dbo_Guests_GuestId">
+          <End Role="Guests" Type="Self.Guests" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guests">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Votes_dbo_PlayLists_PlayListId">
+          <End Role="PlayLists" Type="Self.PlayLists" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayLists">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="PlayListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Votes_dbo_Tracks_TrackId">
+          <End Role="Tracks" Type="Self.Tracks" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tracks">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="TrackId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CrowdDjModelStoreContainer">
+          <EntitySet Name="Administrators" EntityType="Self.Administrators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Guests" EntityType="Self.Guests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parties" EntityType="Self.Parties" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PartyGuests" EntityType="Self.PartyGuests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PartyTweets" EntityType="Self.PartyTweets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayLists" EntityType="Self.PlayLists" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TrackPlayLists" EntityType="Self.TrackPlayLists" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tracks" EntityType="Self.Tracks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Votes" EntityType="Self.Votes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Guests_dbo_Parties_Party_Id" Association="Self.FK_dbo_Guests_dbo_Parties_Party_Id">
+            <End Role="Parties" EntitySet="Parties" />
+            <End Role="Guests" EntitySet="Guests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PartyGuests_dbo_Guests_GuestId" Association="Self.FK_dbo_PartyGuests_dbo_Guests_GuestId">
+            <End Role="Guests" EntitySet="Guests" />
+            <End Role="PartyGuests" EntitySet="PartyGuests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PartyGuests_dbo_Parties_PartyId" Association="Self.FK_dbo_PartyGuests_dbo_Parties_PartyId">
+            <End Role="Parties" EntitySet="Parties" />
+            <End Role="PartyGuests" EntitySet="PartyGuests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id" Association="Self.FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id">
+            <End Role="PartyGuests" EntitySet="PartyGuests" />
+            <End Role="PartyTweets" EntitySet="PartyTweets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PlayLists_dbo_Parties_Id" Association="Self.FK_dbo_PlayLists_dbo_Parties_Id">
+            <End Role="Parties" EntitySet="Parties" />
+            <End Role="PlayLists" EntitySet="PlayLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TrackPlayLists_dbo_PlayLists_PlayList_Id" Association="Self.FK_dbo_TrackPlayLists_dbo_PlayLists_PlayList_Id">
+            <End Role="PlayLists" EntitySet="PlayLists" />
+            <End Role="TrackPlayLists" EntitySet="TrackPlayLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TrackPlayLists_dbo_Tracks_Track_Id" Association="Self.FK_dbo_TrackPlayLists_dbo_Tracks_Track_Id">
+            <End Role="Tracks" EntitySet="Tracks" />
+            <End Role="TrackPlayLists" EntitySet="TrackPlayLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id" Association="Self.FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id">
+            <End Role="PartyGuests" EntitySet="PartyGuests" />
+            <End Role="Tracks" EntitySet="Tracks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Votes_dbo_Guests_GuestId" Association="Self.FK_dbo_Votes_dbo_Guests_GuestId">
+            <End Role="Guests" EntitySet="Guests" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Votes_dbo_PlayLists_PlayListId" Association="Self.FK_dbo_Votes_dbo_PlayLists_PlayListId">
+            <End Role="PlayLists" EntitySet="PlayLists" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Votes_dbo_Tracks_TrackId" Association="Self.FK_dbo_Votes_dbo_Tracks_TrackId">
+            <End Role="Tracks" EntitySet="Tracks" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CrowdDjModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrators">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Guests">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmailAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="Party_Id" Type="Int32" />
+          <NavigationProperty Name="Parties" Relationship="Self.FK_dbo_Guests_dbo_Parties_Party_Id" FromRole="Guests" ToRole="Parties" />
+          <NavigationProperty Name="PartyGuests" Relationship="Self.FK_dbo_PartyGuests_dbo_Guests_GuestId" FromRole="Guests" ToRole="PartyGuests" />
+          <NavigationProperty Name="Votes" Relationship="Self.FK_dbo_Votes_dbo_Guests_GuestId" FromRole="Guests" ToRole="Votes" />
+        </EntityType>
+        <EntityType Name="Parties">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Guests" Relationship="Self.FK_dbo_Guests_dbo_Parties_Party_Id" FromRole="Parties" ToRole="Guests" />
+          <NavigationProperty Name="PartyGuests" Relationship="Self.FK_dbo_PartyGuests_dbo_Parties_PartyId" FromRole="Parties" ToRole="PartyGuests" />
+          <NavigationProperty Name="PlayLists" Relationship="Self.FK_dbo_PlayLists_dbo_Parties_Id" FromRole="Parties" ToRole="PlayLists" />
+        </EntityType>
+        <EntityType Name="PartyGuests">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartyCode" Type="Int32" Nullable="false" />
+          <Property Name="GuestId" Type="Int32" Nullable="false" />
+          <Property Name="PartyId" Type="Int32" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Guests" Relationship="Self.FK_dbo_PartyGuests_dbo_Guests_GuestId" FromRole="PartyGuests" ToRole="Guests" />
+          <NavigationProperty Name="Parties" Relationship="Self.FK_dbo_PartyGuests_dbo_Parties_PartyId" FromRole="PartyGuests" ToRole="Parties" />
+          <NavigationProperty Name="PartyTweets" Relationship="Self.FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id" FromRole="PartyGuests" ToRole="PartyTweets" />
+          <NavigationProperty Name="Tracks" Relationship="Self.FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id" FromRole="PartyGuests" ToRole="Tracks" />
+        </EntityType>
+        <EntityType Name="PartyTweets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Message" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="PartyGuest_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PartyGuests" Relationship="Self.FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id" FromRole="PartyTweets" ToRole="PartyGuests" />
+        </EntityType>
+        <EntityType Name="PlayLists">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Parties" Relationship="Self.FK_dbo_PlayLists_dbo_Parties_Id" FromRole="PlayLists" ToRole="Parties" />
+          <NavigationProperty Name="Votes" Relationship="Self.FK_dbo_Votes_dbo_PlayLists_PlayListId" FromRole="PlayLists" ToRole="Votes" />
+          <NavigationProperty Name="Tracks" Relationship="Self.TrackPlayLists" FromRole="PlayLists" ToRole="Tracks" />
+        </EntityType>
+        <EntityType Name="Tracks">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Interpret" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Url" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RecommendedByGuest_Id" Type="Int32" />
+          <NavigationProperty Name="PartyGuests" Relationship="Self.FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id" FromRole="Tracks" ToRole="PartyGuests" />
+          <NavigationProperty Name="Votes" Relationship="Self.FK_dbo_Votes_dbo_Tracks_TrackId" FromRole="Tracks" ToRole="Votes" />
+          <NavigationProperty Name="PlayLists" Relationship="Self.TrackPlayLists" FromRole="Tracks" ToRole="PlayLists" />
+        </EntityType>
+        <EntityType Name="Votes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="GuestId" Type="Int32" Nullable="false" />
+          <Property Name="TrackId" Type="Int32" Nullable="false" />
+          <Property Name="PlayListId" Type="Int32" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Guests" Relationship="Self.FK_dbo_Votes_dbo_Guests_GuestId" FromRole="Votes" ToRole="Guests" />
+          <NavigationProperty Name="PlayLists" Relationship="Self.FK_dbo_Votes_dbo_PlayLists_PlayListId" FromRole="Votes" ToRole="PlayLists" />
+          <NavigationProperty Name="Tracks" Relationship="Self.FK_dbo_Votes_dbo_Tracks_TrackId" FromRole="Votes" ToRole="Tracks" />
+        </EntityType>
+        <Association Name="FK_dbo_Guests_dbo_Parties_Party_Id">
+          <End Role="Parties" Type="Self.Parties" Multiplicity="0..1" />
+          <End Role="Guests" Type="Self.Guests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Guests">
+              <PropertyRef Name="Party_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PartyGuests_dbo_Guests_GuestId">
+          <End Role="Guests" Type="Self.Guests" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PartyGuests" Type="Self.PartyGuests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guests">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PartyGuests">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Votes_dbo_Guests_GuestId">
+          <End Role="Guests" Type="Self.Guests" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guests">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PartyGuests_dbo_Parties_PartyId">
+          <End Role="Parties" Type="Self.Parties" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PartyGuests" Type="Self.PartyGuests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PartyGuests">
+              <PropertyRef Name="PartyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PlayLists_dbo_Parties_Id">
+          <End Role="Parties" Type="Self.Parties" Multiplicity="1" />
+          <End Role="PlayLists" Type="Self.PlayLists" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Parties">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayLists">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id">
+          <End Role="PartyGuests" Type="Self.PartyGuests" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PartyTweets" Type="Self.PartyTweets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PartyGuests">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PartyTweets">
+              <PropertyRef Name="PartyGuest_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id">
+          <End Role="PartyGuests" Type="Self.PartyGuests" Multiplicity="0..1" />
+          <End Role="Tracks" Type="Self.Tracks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PartyGuests">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tracks">
+              <PropertyRef Name="RecommendedByGuest_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Votes_dbo_PlayLists_PlayListId">
+          <End Role="PlayLists" Type="Self.PlayLists" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayLists">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="PlayListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Votes_dbo_Tracks_TrackId">
+          <End Role="Tracks" Type="Self.Tracks" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tracks">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="TrackId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TrackPlayLists">
+          <End Role="PlayLists" Type="Self.PlayLists" Multiplicity="*" />
+          <End Role="Tracks" Type="Self.Tracks" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administrators" EntityType="Self.Administrators" />
+          <EntitySet Name="Guests" EntityType="Self.Guests" />
+          <EntitySet Name="Parties" EntityType="Self.Parties" />
+          <EntitySet Name="PartyGuests" EntityType="Self.PartyGuests" />
+          <EntitySet Name="PartyTweets" EntityType="Self.PartyTweets" />
+          <EntitySet Name="PlayLists" EntityType="Self.PlayLists" />
+          <EntitySet Name="Tracks" EntityType="Self.Tracks" />
+          <EntitySet Name="Votes" EntityType="Self.Votes" />
+          <AssociationSet Name="FK_dbo_Guests_dbo_Parties_Party_Id" Association="Self.FK_dbo_Guests_dbo_Parties_Party_Id">
+            <End Role="Parties" EntitySet="Parties" />
+            <End Role="Guests" EntitySet="Guests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PartyGuests_dbo_Guests_GuestId" Association="Self.FK_dbo_PartyGuests_dbo_Guests_GuestId">
+            <End Role="Guests" EntitySet="Guests" />
+            <End Role="PartyGuests" EntitySet="PartyGuests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Votes_dbo_Guests_GuestId" Association="Self.FK_dbo_Votes_dbo_Guests_GuestId">
+            <End Role="Guests" EntitySet="Guests" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PartyGuests_dbo_Parties_PartyId" Association="Self.FK_dbo_PartyGuests_dbo_Parties_PartyId">
+            <End Role="Parties" EntitySet="Parties" />
+            <End Role="PartyGuests" EntitySet="PartyGuests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PlayLists_dbo_Parties_Id" Association="Self.FK_dbo_PlayLists_dbo_Parties_Id">
+            <End Role="Parties" EntitySet="Parties" />
+            <End Role="PlayLists" EntitySet="PlayLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id" Association="Self.FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id">
+            <End Role="PartyGuests" EntitySet="PartyGuests" />
+            <End Role="PartyTweets" EntitySet="PartyTweets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id" Association="Self.FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id">
+            <End Role="PartyGuests" EntitySet="PartyGuests" />
+            <End Role="Tracks" EntitySet="Tracks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Votes_dbo_PlayLists_PlayListId" Association="Self.FK_dbo_Votes_dbo_PlayLists_PlayListId">
+            <End Role="PlayLists" EntitySet="PlayLists" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Votes_dbo_Tracks_TrackId" Association="Self.FK_dbo_Votes_dbo_Tracks_TrackId">
+            <End Role="Tracks" EntitySet="Tracks" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="TrackPlayLists" Association="Self.TrackPlayLists">
+            <End Role="PlayLists" EntitySet="PlayLists" />
+            <End Role="Tracks" EntitySet="Tracks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CrowdDjModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Administrators">
+            <EntityTypeMapping TypeName="CrowdDjModel.Administrators">
+              <MappingFragment StoreEntitySet="Administrators">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Guests">
+            <EntityTypeMapping TypeName="CrowdDjModel.Guests">
+              <MappingFragment StoreEntitySet="Guests">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="Party_Id" ColumnName="Party_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parties">
+            <EntityTypeMapping TypeName="CrowdDjModel.Parties">
+              <MappingFragment StoreEntitySet="Parties">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PartyGuests">
+            <EntityTypeMapping TypeName="CrowdDjModel.PartyGuests">
+              <MappingFragment StoreEntitySet="PartyGuests">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PartyCode" ColumnName="PartyCode" />
+                <ScalarProperty Name="GuestId" ColumnName="GuestId" />
+                <ScalarProperty Name="PartyId" ColumnName="PartyId" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PartyTweets">
+            <EntityTypeMapping TypeName="CrowdDjModel.PartyTweets">
+              <MappingFragment StoreEntitySet="PartyTweets">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="PartyGuest_Id" ColumnName="PartyGuest_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayLists">
+            <EntityTypeMapping TypeName="CrowdDjModel.PlayLists">
+              <MappingFragment StoreEntitySet="PlayLists">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tracks">
+            <EntityTypeMapping TypeName="CrowdDjModel.Tracks">
+              <MappingFragment StoreEntitySet="Tracks">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Interpret" ColumnName="Interpret" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="RecommendedByGuest_Id" ColumnName="RecommendedByGuest_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Votes">
+            <EntityTypeMapping TypeName="CrowdDjModel.Votes">
+              <MappingFragment StoreEntitySet="Votes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="GuestId" ColumnName="GuestId" />
+                <ScalarProperty Name="TrackId" ColumnName="TrackId" />
+                <ScalarProperty Name="PlayListId" ColumnName="PlayListId" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="TrackPlayLists" TypeName="CrowdDjModel.TrackPlayLists" StoreEntitySet="TrackPlayLists">
+            <EndProperty Name="PlayLists">
+              <ScalarProperty Name="Id" ColumnName="PlayList_Id" />
+            </EndProperty>
+            <EndProperty Name="Tracks">
+              <ScalarProperty Name="Id" ColumnName="Track_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

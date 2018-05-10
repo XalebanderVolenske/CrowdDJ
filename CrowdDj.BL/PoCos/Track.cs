@@ -19,7 +19,7 @@ namespace CrowdDj.BL.PoCos
         [MaxLength(200)]
         public string Url { get; set; }
 
-        public PartyGuest RecommandedByGuest { get; set; }
+        public PartyGuest RecommendedByGuest { get; set; }
 
         public ICollection<Vote> Votes { get; set; }
 

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace CrowdDj.BL.PoCos
 {
     /// <summary>
     /// Jede Entität muss eine Id und ein Concurrency-Feld haben
-    /// Die Annotation [Timestamp] muss in der Klasse extra notiert werden.
     /// </summary>
     public interface IEntityObject
     {

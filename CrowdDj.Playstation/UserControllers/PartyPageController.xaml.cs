@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CrowdDj.WPF
+namespace CrowdDj.Playstation
 {
     /// <summary>
-    /// Interaction logic for GuestWindow.xaml
+    /// Interaction logic for PartyPageController.xaml
     /// </summary>
-    public partial class GuestWindow
+    public partial class PartyPageController : UserControl
     {
-        public GuestWindow()
+        public PartyPageController()
         {
             InitializeComponent();
         }

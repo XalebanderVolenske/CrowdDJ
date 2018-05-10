@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="46deca5403fb4b8cb6ba1092c0672802" Name="Diagram1" ZoomLevel="73">
+        <EntityTypeShape EntityType="CrowdDjModel.Administrators" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CrowdDjModel.Guests" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CrowdDjModel.Parties" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CrowdDjModel.PartyGuests" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CrowdDjModel.PartyTweets" Width="1.5" PointX="7.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CrowdDjModel.PlayLists" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CrowdDjModel.Tracks" Width="1.5" PointX="7.5" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CrowdDjModel.Votes" Width="1.5" PointX="9.75" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_Guests_dbo_Parties_Party_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_PartyGuests_dbo_Guests_GuestId" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_Votes_dbo_Guests_GuestId" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_PartyGuests_dbo_Parties_PartyId" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_PlayLists_dbo_Parties_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_PartyTweets_dbo_PartyGuests_PartyGuest_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_Tracks_dbo_PartyGuests_RecommendedByGuest_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_Votes_dbo_PlayLists_PlayListId" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.FK_dbo_Votes_dbo_Tracks_TrackId" ManuallyRouted="false" />
+        <AssociationConnector Association="CrowdDjModel.TrackPlayLists" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -23,7 +23,7 @@ namespace CrowdDj.Web.ApiControllers
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<PartyTweet> partyTweets = _unitOfWork.PartyTweets.Get(includeProperties:"User");
+            var partyTweets = _unitOfWork.PartyTweets.Get(includeProperties: "User");
             if (!partyTweets.Any())
             {
                 return NotFound();
@@ -34,7 +34,7 @@ namespace CrowdDj.Web.ApiControllers
         [HttpGet("GetPartyTweetsOfParty/{partyid}")]
         public IActionResult GetPartyTweetsOfParty(int partyid)
         {
-            IEnumerable<PartyTweet> partyTweets = _unitOfWork.PartyTweets.Get(includeProperties:"Party").Where(p => p.PartyGuest.PartyId == partyid);
+            var partyTweets = _unitOfWork.PartyTweets.Get(includeProperties: "Party").Where(p => p.PartyGuest.PartyId == partyid);
             if (!partyTweets.Any())
             {
                 return NotFound();

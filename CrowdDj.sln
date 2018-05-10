@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDj.TestConsole", "Crow
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrowdDj.Web", "CrowdDj.Web\CrowdDj.Web.csproj", "{ED6AC0BB-69FF-4B6C-85D9-E19ADBDBE208}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDj.Playstation.WPF", "CrowdDj.Playstation.WPF\CrowdDj.Playstation.WPF.csproj", "{10685249-688B-4DBD-B0F4-04BE5EFB1681}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDj.Playstation", "CrowdDj.Playstation\CrowdDj.Playstation.csproj", "{290F5183-3A02-42C2-84A2-ABEBC42D0929}"
 EndProject
 Global
@@ -49,10 +47,6 @@ Global
 		{ED6AC0BB-69FF-4B6C-85D9-E19ADBDBE208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED6AC0BB-69FF-4B6C-85D9-E19ADBDBE208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED6AC0BB-69FF-4B6C-85D9-E19ADBDBE208}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10685249-688B-4DBD-B0F4-04BE5EFB1681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10685249-688B-4DBD-B0F4-04BE5EFB1681}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10685249-688B-4DBD-B0F4-04BE5EFB1681}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10685249-688B-4DBD-B0F4-04BE5EFB1681}.Release|Any CPU.Build.0 = Release|Any CPU
 		{290F5183-3A02-42C2-84A2-ABEBC42D0929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{290F5183-3A02-42C2-84A2-ABEBC42D0929}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{290F5183-3A02-42C2-84A2-ABEBC42D0929}.Release|Any CPU.ActiveCfg = Release|Any CPU

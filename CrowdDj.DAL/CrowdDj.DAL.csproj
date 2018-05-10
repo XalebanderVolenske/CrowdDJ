@@ -49,9 +49,9 @@
   <ItemGroup>
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="GenericRepository.cs" />
-    <Compile Include="Migrations\201805041835258_InitialCreate.cs" />
-    <Compile Include="Migrations\201805041835258_InitialCreate.Designer.cs">
-      <DependentUpon>201805041835258_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201805101928217_InitialCreate.cs" />
+    <Compile Include="Migrations\201805101928217_InitialCreate.Designer.cs">
+      <DependentUpon>201805101928217_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySeed.cs" />
@@ -78,8 +78,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805041835258_InitialCreate.resx">
-      <DependentUpon>201805041835258_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805101928217_InitialCreate.resx">
+      <DependentUpon>201805101928217_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

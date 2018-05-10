@@ -65,11 +65,11 @@ namespace CrowdDj.DAL.Migrations
                         Interpret = c.String(nullable: false, maxLength: 200),
                         Url = c.String(nullable: false, maxLength: 200),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
-                        RecommandedByGuest_Id = c.Int(),
+                        RecommendedByGuest_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.PartyGuests", t => t.RecommandedByGuest_Id)
-                .Index(t => t.RecommandedByGuest_Id);
+                .ForeignKey("dbo.PartyGuests", t => t.RecommendedByGuest_Id)
+                .Index(t => t.RecommendedByGuest_Id);
             
             CreateTable(
                 "dbo.PartyGuests",
@@ -139,7 +139,7 @@ namespace CrowdDj.DAL.Migrations
             DropForeignKey("dbo.Votes", "TrackId", "dbo.Tracks");
             DropForeignKey("dbo.Votes", "PlayListId", "dbo.PlayLists");
             DropForeignKey("dbo.Votes", "GuestId", "dbo.Guests");
-            DropForeignKey("dbo.Tracks", "RecommandedByGuest_Id", "dbo.PartyGuests");
+            DropForeignKey("dbo.Tracks", "RecommendedByGuest_Id", "dbo.PartyGuests");
             DropForeignKey("dbo.PartyTweets", "PartyGuest_Id", "dbo.PartyGuests");
             DropForeignKey("dbo.PartyGuests", "PartyId", "dbo.Parties");
             DropForeignKey("dbo.PartyGuests", "GuestId", "dbo.Guests");
@@ -155,7 +155,7 @@ namespace CrowdDj.DAL.Migrations
             DropIndex("dbo.PartyTweets", new[] { "PartyGuest_Id" });
             DropIndex("dbo.PartyGuests", new[] { "PartyId" });
             DropIndex("dbo.PartyGuests", new[] { "GuestId" });
-            DropIndex("dbo.Tracks", new[] { "RecommandedByGuest_Id" });
+            DropIndex("dbo.Tracks", new[] { "RecommendedByGuest_Id" });
             DropIndex("dbo.PlayLists", new[] { "Id" });
             DropIndex("dbo.Guests", new[] { "Party_Id" });
             DropTable("dbo.TrackPlayLists");

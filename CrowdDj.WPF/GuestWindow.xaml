@@ -37,12 +37,12 @@
                               VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Auto"
                           Margin="10"
-                      ItemsSource="{Binding PlayListTracks}"
+                      ItemsSource="{Binding TracksOfPartyPlayList}"
                       VerticalAlignment="Stretch"
                       HorizontalContentAlignment="Stretch"
                       SelectionMode="Single"
                       SelectedItem="{Binding SelectedVoteTrack}"
-                      Height="250" Width="480">
+                      Height="250" Width="470" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Path=Title}" 
                                         Header="Titel" Width="120">
@@ -56,6 +56,26 @@
                             </DataGridTextColumn>
                             <DataGridTextColumn Binding="{Binding Path=Interpret}" 
                                         Header="Interpret" Width="120">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="10,5,10,5"/>
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Path=Votes}" 
+                                                Header="Votes" Width="100">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="10,5,10,5"/>
+                                        <Setter Property="HorizontalAlignment" Value="Left" />
+                                        <Setter Property="VerticalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Path=RecommendedBy}" 
+                                                Header="Recommended by" Width="140">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Margin" Value="10,5,10,5"/>
@@ -120,7 +140,7 @@
                     <Button Margin="20" Grid.Row="2"
                             Padding="5"
                             Content="Song empfehlen"
-                            Command="{Binding CommandRecommandTrack}" Width="Auto" HorizontalAlignment="Stretch"/>
+                            Command="{Binding CommandRecommendedTrack}" Width="Auto" HorizontalAlignment="Stretch"/>
                 </Grid>
             </TabItem>
             <TabItem Width="150" Height="40" Header="PartyTweets">

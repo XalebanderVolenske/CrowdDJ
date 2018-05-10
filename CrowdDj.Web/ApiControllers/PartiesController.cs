@@ -6,6 +6,7 @@ using CrowdDj.BL.PoCos;
 using CrowdDj.BL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Isam.Esent.Interop;
 
 namespace CrowdDj.Web.ApiControllers
 {
@@ -23,7 +24,7 @@ namespace CrowdDj.Web.ApiControllers
         [HttpGet]
         public IActionResult Get()
         {
-            Party[] parties = _unitOfWork.Parties.Get();
+            var parties = _unitOfWork.Parties.Get();
             if (!parties.Any())
             {
                 return NotFound();
@@ -47,8 +48,7 @@ namespace CrowdDj.Web.ApiControllers
         [HttpGet("AllGuestsOfParty/{id}")]
         public IActionResult GetAllGuestsOfParty(int id)
         {
-            var party = _unitOfWork.Parties.Get().Where(p => p.Id == id);
-            IEnumerable<Guest> guests = _unitOfWork.Guests.Get(includeProperties: "Parties");
+            var guests = _unitOfWork.PartyGuests.Get(includeProperties: "Party").Where(pg => pg.PartyId == id);
             if (!guests.Any())
             {
                 return NotFound();
@@ -59,8 +59,7 @@ namespace CrowdDj.Web.ApiControllers
         [HttpGet("GetPlayListWithTracksOfParty/{id}")]
         public IActionResult GetPlayListWithTracksOfParty(int id)
         {
-            var party = _unitOfWork.Parties.Get(includeProperties: "PlayList").SingleOrDefault(p => p.Id == id);
-            var playList = _unitOfWork.PlayLists.Get(includeProperties: "Tracks").SingleOrDefault(t => party != null && t.Id == party.PlayList.Id);
+            var playList = _unitOfWork.PlayLists.Get(includeProperties: "Party,Tracks,Votes").SingleOrDefault(pl => pl.Party.Id == id);
             if (playList == null)
             {
                 return NotFound();
@@ -75,10 +74,9 @@ namespace CrowdDj.Web.ApiControllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
             _unitOfWork.Parties.Insert(party);
             _unitOfWork.SaveChanges();
-            return Ok(party);
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         // PUT api/values/5
@@ -88,19 +86,32 @@ namespace CrowdDj.Web.ApiControllers
             if (!ModelState.IsValid)
                 return NotFound();
 
-            var partyInDb = _unitOfWork.Parties.GetById(id);
-            if (partyInDb == null)
-                return NotFound();
+            if (id != party.Id)
+            {
+                return BadRequest();
+            }
 
-            partyInDb.Name = party.Name;
-            partyInDb.StartTime = party.StartTime;
-            partyInDb.EndTime = party.EndTime;
-            partyInDb.Location = party.Location;
-            partyInDb.Guests = party.Guests;
-            partyInDb.PlayList = party.PlayList;
+            try
+            {
+                var partyInDb = _unitOfWork.Parties.GetById(party.Id);
+                if (partyInDb != null)
+                {
+                    partyInDb.Name = party.Name;
+                    partyInDb.StartTime = party.StartTime;
+                    partyInDb.EndTime = party.EndTime;
+                    partyInDb.Location = party.Location;
+                    partyInDb.Guests = party.Guests;
+                    partyInDb.PlayList = party.PlayList;
 
-            _unitOfWork.Parties.Update(partyInDb);
-            _unitOfWork.SaveChanges();
+                    _unitOfWork.Parties.Update(partyInDb);
+                    _unitOfWork.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return NotFound("No Record Found against this Id...");
+            }
             return Ok(party);
         }
 
@@ -109,9 +120,6 @@ namespace CrowdDj.Web.ApiControllers
         public IActionResult Delete(int id)
         {
             var partyInDb = _unitOfWork.Parties.GetById(id);
-
-            if (partyInDb == null)
-                 NotFound();
             _unitOfWork.Parties.Delete(partyInDb);
             _unitOfWork.SaveChanges();
             return Ok("Party deleted...");

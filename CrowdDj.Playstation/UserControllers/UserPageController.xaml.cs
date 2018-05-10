@@ -12,15 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
-namespace CrowdDj.Playstation.WPF
+namespace CrowdDj.Playstation
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for UserPageController.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class UserPageController
     {
-        public MainWindow()
+        public UserPageController()
         {
             InitializeComponent();
         }

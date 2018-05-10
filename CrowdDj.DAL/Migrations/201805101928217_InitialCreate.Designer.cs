@@ -13,7 +13,7 @@ namespace CrowdDj.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201805041835258_InitialCreate"; }
+            get { return "201805101928217_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

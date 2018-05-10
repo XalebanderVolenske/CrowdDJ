@@ -18,8 +18,8 @@ namespace CrowdDj.WPF.ViewModels
     class GuestViewModel : BaseViewModel
     {
         private Track _selectedTrack;
-        private Track _selectedVoteTrack;
-        private Track _selectedRecommandTrack;
+        private ListTrack _selectedVoteTrack;
+        private Track _selectedRecommendedTrack;
         private string _textPartyTweet;
 
         public GuestViewModel() : base(null)
@@ -29,14 +29,24 @@ namespace CrowdDj.WPF.ViewModels
         public GuestViewModel(IWindowController windowController, PartyGuest partyGuest) : base(windowController)
         {
             PartyPlayList = new PlayList();
-            PlayListTracks = new ObservableCollection<Track>();
+            SelectedVoteTrack = new ListTrack();
+            TracksOfPartyPlayList = new List<ListTrack>();
             PartyTweets = new List<PartyTweet>();
-            _selectedRecommandTrack = new Track();
+            _selectedRecommendedTrack = new Track();
 
             TextPartyTweet = "";
 
             LoadCommands();
             LoadData(partyGuest);
+        }
+
+        public struct ListTrack
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public string Interpret { get; set; }
+            public int Votes { get; set; }
+            public PartyGuest RecommendedBy { get; set; }
         }
 
         public string NewTextPartyTweet { get; set; }
@@ -45,7 +55,7 @@ namespace CrowdDj.WPF.ViewModels
 
         public PlayList PartyPlayList { get; set; }
 
-        public ObservableCollection<Track> PlayListTracks { get; set; }
+        public List<ListTrack> TracksOfPartyPlayList { get; set; }
 
         public ObservableCollection<Track> TracksNotInPlayList { get; set; }
 
@@ -73,7 +83,7 @@ namespace CrowdDj.WPF.ViewModels
             }
         }
 
-        public Track SelectedVoteTrack
+        public ListTrack SelectedVoteTrack
         {
             get { return _selectedVoteTrack; }
             set
@@ -83,24 +93,24 @@ namespace CrowdDj.WPF.ViewModels
             }
         }
 
-        public Track SelectedRecommandTrack
+        public Track SelectedRecommendedTrack
         {
-            get { return _selectedRecommandTrack; }
+            get { return _selectedRecommendedTrack; }
             set
             {
-                _selectedVoteTrack = value;
+                _selectedRecommendedTrack = value;
                 OnPropertyChanged();
             }
         }
 
         public RelayCommand CommandVoteForTrack { get; set; }
-        public RelayCommand CommandRecommandTrack { get; set; }
+        public RelayCommand CommandRecommendedTrack { get; set; }
         public RelayCommand CommandSendPartyTweet { get; set; }
 
         private void LoadCommands()
         {
             CommandVoteForTrack = new RelayCommand(_ => VoteForTrack(), _ => true);
-            CommandRecommandTrack = new RelayCommand(_ => RecommandTrack(), _ => true);
+            CommandRecommendedTrack = new RelayCommand(_ => RecommendedTrack(), _ => true);
             CommandSendPartyTweet = new RelayCommand(SendPartyTweet, c => true);
         }
 
@@ -118,14 +128,43 @@ namespace CrowdDj.WPF.ViewModels
 
         private void LoadPlayListWithTracks()
         {
+            var tracksOfPartyPlayList = new List<ListTrack>();
             using (IUnitOfWork unitOfWork = new UnitOfWork())
             {
                 PartyPlayList = unitOfWork.PlayLists.Get(includeProperties: "Party,Tracks")
                     .SingleOrDefault(p => p.Party.Id == LoggedPartyGuest.PartyId);
-
                 if (PartyPlayList != null)
+                {
                     foreach (Track t in PartyPlayList.Tracks)
-                        PlayListTracks.Add(t);
+                    {
+                        var recommendedByGuest = unitOfWork.Tracks
+                            .Get(includeProperties: "Votes,RecommendedByGuest").SingleOrDefault(rt => rt.Id == t.Id)
+                            ?.RecommendedByGuest;
+                        if (recommendedByGuest != null)
+                        {
+                            tracksOfPartyPlayList.Add(item: new ListTrack
+                            {
+                                Id = t.Id,
+                                Interpret = t.Interpret,
+                                Title = t.Title,
+                                Votes = t.Votes.Count,
+                                RecommendedBy = recommendedByGuest
+                            });
+                        }
+                        else
+                        {
+                            tracksOfPartyPlayList.Add(item: new ListTrack
+                            {
+                                Id = t.Id,
+                                Interpret = t.Interpret,
+                                Title = t.Title,
+                                Votes = t.Votes.Count
+                            });
+                        }
+                    }
+                    tracksOfPartyPlayList.Sort((t1, t2) => t2.Votes.CompareTo(t1.Votes));
+                    TracksOfPartyPlayList = tracksOfPartyPlayList;
+                }
             }
         }
 
@@ -157,60 +196,63 @@ namespace CrowdDj.WPF.ViewModels
 
                 if (PartyPlayList != null)
                     foreach (Track t in allSongs)
-                        PlayListTracks.Add(t);
+                    {
+                        TracksOfPartyPlayList.Add(new ListTrack
+                        {
+                            Interpret = t.Interpret,
+                            Title = t.Title
+                        });
+                    }
             }
         }
 
         private void VoteForTrack()
         {
-            if (SelectedVoteTrack != null)
+            using (IUnitOfWork unitOfWork = new UnitOfWork())
             {
-                using (IUnitOfWork unitOfWork = new UnitOfWork())
+                Vote vote = new Vote
                 {
-                    Vote vote = new Vote
-                    {
-                        GuestId = LoggedPartyGuest.Id,
-                        PlayListId = PartyPlayList.Id,
-                        TrackId = SelectedVoteTrack.Id,
-                        TimeStamp = DateTime.Now.ToLocalTime(),
-                    };
-                    var checkVote = unitOfWork.Votes.Get(includeProperties: "Guest,PlayList,Track")
-                        .SingleOrDefault(cv => cv.PlayList.Id == PartyPlayList.Id &&
-                                               cv.Track.Id == SelectedVoteTrack.Id &&
-                                               cv.GuestId == LoggedPartyGuest.GuestId);
-                    if (checkVote == null)
-                    {                      
-                        unitOfWork.Votes.Insert(vote);
-                        unitOfWork.SaveChanges();
-                        MessageBox.Show("Successfully voted!");
-                        LoadPlayListWithTracks();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Already voted!");
-                    }
+                    GuestId = LoggedPartyGuest.Id,
+                    PlayListId = PartyPlayList.Id,
+                    TrackId = SelectedVoteTrack.Id,
+                    TimeStamp = DateTime.Now.ToLocalTime(),
+                };
+                var checkVote = unitOfWork.Votes.Get(includeProperties: "Guest,PlayList,Track")
+                    .SingleOrDefault(cv => cv.PlayList.Id == PartyPlayList.Id &&
+                                           cv.Track.Id == SelectedVoteTrack.Id &&
+                                           cv.GuestId == LoggedPartyGuest.GuestId);
+                if (checkVote == null)
+                {                      
+                    unitOfWork.Votes.Insert(vote);
+                    unitOfWork.SaveChanges();
+                    MessageBox.Show("Successfully voted!");
+                    LoadPlayListWithTracks();
+                }
+                else
+                {
+                    MessageBox.Show("Already voted!");
                 }
             }
         }
 
-        private void RecommandTrack()
+        private void RecommendedTrack()
         {
-            if (SelectedRecommandTrack != null)
+            if (SelectedRecommendedTrack != null)
             {
                 using (IUnitOfWork unitOfWork = new UnitOfWork())
                 {
                     var checkRecommandation = unitOfWork.Tracks.Get(includeProperties: "Guest,PlayList,Track")
-                        .SingleOrDefault(t => t.RecommandedByGuest.Id == LoggedPartyGuest.Id);
+                        .SingleOrDefault(t => t.RecommendedByGuest.Id == LoggedPartyGuest.Id);
                     if (checkRecommandation == null)
                     {
-                        SelectedRecommandTrack.RecommandedByGuest = LoggedPartyGuest;
-                        unitOfWork.Tracks.Update(SelectedRecommandTrack);
+                        SelectedRecommendedTrack.RecommendedByGuest = LoggedPartyGuest;
+                        unitOfWork.Tracks.Update(SelectedRecommendedTrack);
                         unitOfWork.SaveChanges();
-                        MessageBox.Show("Song has been recommanded!");
+                        MessageBox.Show("Song successfully recommended!");
                     }
                     else
                     {
-                        MessageBox.Show("You already recommanded this Song!");
+                        MessageBox.Show("You already recommended this Song!");
                     }
                 }
             }

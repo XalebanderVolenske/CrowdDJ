@@ -21,7 +21,7 @@ namespace CrowdDj.DAL
 
             //for (int i = 0; i < administrators.Length; i++)
             //{
-            //    administrators[i] = new Administrator { UserName = $"admin{i+1}", Password = $"passme{(i+1) * 11}" };
+            //    administrators[i] = new Administrator { UserName = $"Admin{i+1}", Password = $"passme{(i+1) * 11}" };
             //    context.Administrators.Add(administrators[i]);
             //}
 
