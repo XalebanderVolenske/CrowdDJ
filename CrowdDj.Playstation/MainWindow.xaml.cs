@@ -45,7 +45,10 @@ namespace CrowdDj.Playstation
                     break;
                 case 3:
                     GridPrincipal.Children.Clear();
-                    GridPrincipal.Children.Add(new UserPageController());
+                    GridPrincipal.Children.Add(new RecommendedSongsPageController());
+                    break;
+                case 4:
+                    Close();
                     break;
             }
 

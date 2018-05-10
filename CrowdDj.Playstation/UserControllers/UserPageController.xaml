@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CrowdDj.Playstation"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="250">
+             d:DesignHeight="450" d:DesignWidth="700">
 
     <Grid x:Name="GridMenu" Width="700" Height="450" HorizontalAlignment="Left">
         <Grid x:Name="LayoutRoot" HorizontalAlignment="Left">
@@ -23,15 +23,13 @@
                   VerticalScrollBarVisibility="Auto"
               HorizontalScrollBarVisibility="Auto"
               Margin="10"
-          ItemsSource="{Binding Parties}"
           VerticalAlignment="Stretch"
           HorizontalContentAlignment="Stretch"
           SelectionMode="Single"
-          SelectedItem="{Binding SelectedParty}"
           Height="450" Width="400">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Path=Name}" 
-                            Header="Partyname" Width="120">
+                    <DataGridTextColumn
+                            Header="Title" Width="120">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Margin" Value="10,5,10,5"/>
@@ -40,24 +38,45 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-
+                    <DataGridTextColumn Binding="{Binding Path=Interpret}" 
+                                        Header="Artist" Width="140">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="10,5,10,5"/>
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Path=Emailaddress}" 
+                                        Header="Recommended by" Width="140">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="10,5,10,5"/>
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+
         </Grid>
-            <Grid x:Name="UserForm" Width="280" HorizontalAlignment="Right" Background="LightSteelBlue" Opacity=".7">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <StackPanel Orientation="Vertical">
-                <TextBlock Margin="5,0,60,0" Foreground="DarkSlateGray" FontSize="14" FontStyle="Italic">E-Mail</TextBlock>
-                    <TextBox FontSize="14" Foreground="DarkSlateGray" Height="24" Margin="5,0,60,0" Width="Auto"></TextBox>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                        <Button  Margin="5">Speichern</Button>
-                        <Button  Margin="5">Zu Party hinzufügen</Button>
-                    </StackPanel>
+        <Grid x:Name="UserForm" Width="280" HorizontalAlignment="Right" Background="YellowGreen" Opacity=".7">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Margin="5,10,60,20" Foreground="White" FontSize="20" FontStyle="Italic">Manage Guest</TextBlock>
+                <TextBlock Margin="5,0,60,0" Foreground="White" FontSize="14" FontStyle="Italic">E-Mail</TextBlock>
+                <TextBox  FontSize="14" Foreground="White"  Height="24" Margin="5,0,60,0" Width="Auto"></TextBox>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <Button Background="LightSlateGray " Foreground="White" Margin="5,10" >Save</Button>
+                    <Button Background="LightSlateGray" Foreground="White" Margin="5,10">Invent to Party</Button>
                 </StackPanel>
-            </Grid>
+            </StackPanel>
         </Grid>
+    </Grid>
 </UserControl>

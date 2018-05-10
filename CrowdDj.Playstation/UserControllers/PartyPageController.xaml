@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:CrowdDj.Playstation"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="700">
 
     <Grid x:Name="GridMenu" Width="700" Height="450" HorizontalAlignment="Left">
         <Grid x:Name="LayoutRoot" HorizontalAlignment="Left">
@@ -74,7 +74,7 @@
             </DataGrid>
 
         </Grid>
-        <Grid x:Name="UserForm" Width="280" HorizontalAlignment="Right" Background="YellowGreen" Opacity=".7">
+        <Grid x:Name="UserForm" Width="280" HorizontalAlignment="Right" Background="Orange" Opacity=".7">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -91,8 +91,8 @@
                 <TextBlock Foreground="White" FontSize="14" FontStyle="Italic" Margin="5,0,60,0">Endtime</TextBlock>
                 <TextBox FontSize="14" Foreground="White" Height="24" Margin="5,0,60,0" Width="Auto"></TextBox>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                    <Button Background="LightSlateGray" Foreground="White" Margin="5" >Speichern</Button>
-                    <Button Background="LightSlateGray" Foreground="White" Margin="5">Löschen</Button>
+                    <Button Background="LightSlateGray" Foreground="White" Margin="5,10" >Save</Button>
+                    <Button Background="LightSlateGray" Foreground="White" Margin="5,10">Delete</Button>
                 </StackPanel>
             </StackPanel>
         </Grid>

@@ -22,25 +22,25 @@
                     <ListViewItem Height="65" Padding="0">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="AccountCircle" Width="30" Height="30" Foreground="Green" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Benutzer" Margin="10" FontSize="17"></TextBlock>
+                            <TextBlock Text="Users" Margin="10" FontSize="17"></TextBlock>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="65" Padding="0">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="StarCircle" Width="30" Height="30" Foreground="Gold" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Parties" Margin="10" FontSize="17"></TextBlock>
+                            <TextBlock Text="Partys" Margin="10" FontSize="17"></TextBlock>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="65" Padding="0">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="PlaylistCheck" Width="30" Height="30" Foreground="Red" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Wiedergabeliste" Margin="10" FontSize="15"></TextBlock>
+                            <TextBlock Text="Playlist" Margin="10" FontSize="15"></TextBlock>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="65" Padding="0">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Artist" Width="30" Height="30" Foreground="DeepSkyBlue" Margin="5" VerticalAlignment="Center"/>
-                            <TextBlock Text="Empfohlene Songs" Margin="10" FontSize="13"></TextBlock>
+                            <TextBlock Text="Recommended Songs" Margin="10" FontSize="13"></TextBlock>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="73" Padding="0">
